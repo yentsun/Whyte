@@ -73,7 +73,7 @@ abstract class Whyte_Model_Entity {
 	public function __set($property,$value) {
 
 		if (!array_key_exists($property,$this->_data))
-			throw new Invalid_Input_Exception('Нельзя устанавливать новые свойства для объекта!');
+			throw new Zend_Exception('Нельзя устанавливать новые свойства для объекта!');
 		else {
 			$this->_data[$property] = $value;
 		}
@@ -116,12 +116,16 @@ abstract class Whyte_Model_Entity {
 	public function hasErrors() {
 
 		$this->_filterAndCheck();
-		if (!empty($this->_errors)) return true;
-		else return false;
+		if (!empty($this->_errors)) 
+			return true;
+		else 
+			return false;
 	}
 
 	public function getErrors() {
 
+		if (!empty($this->_errors)) 
+			$this->_filterAndCheck();
 		return $this->_errors;
 	}
 
@@ -140,8 +144,3 @@ abstract class Whyte_Model_Entity {
 		}
 		return array_keys($requiredProperties);
 	}
-}
-
-class Invalid_Input_Exception extends Zend_Exception {
-
-}
