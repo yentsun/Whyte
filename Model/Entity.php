@@ -144,3 +144,4 @@ abstract class Whyte_Model_Entity {
 		}
 		return array_keys($requiredProperties);
 	}
+}
