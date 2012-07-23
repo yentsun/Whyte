@@ -3,13 +3,15 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Whyte's documentation!
-=================================
+About
+=====
 
-This ``model`` abstractions were made with two things in mind:
+**Whyte Model** is a set of two abstract classes used as a base for *model*
+layer implementation in `Zend Framework <http://framework.zend.com/>`_.
+It was made with two things in mind:
 
-1. Legacy Databases
-2. Forms without Zend_Form
+1. *Legacy Databases*, where you rather map models to existing table fields.
+2. Render and validate *forms without Zend_Form*.
 
 Contents:
 
@@ -19,70 +21,40 @@ Contents:
     entity <entity>
     mapper
 
+Installation
+============
 
-Реализация модели сущности и мэппера на базе Zend Framework
+These are the steps for a unix-system. As they are trivial, one should be fine
+following them on Windows.
 
-{{>toc}}
+1. Navigate to your ZF-project's library folder. It should be on *include_path*
+   basically::
 
-h1. Установка
+    cd myzfproject/library
 
-Ниже перечислены шаги для unix-системы. Они элементарны, поэтому аналогично будут выглядеть и для Windows. Также это руководство подразумевает, что вы используете "рекомендуемую структуру проекта Zend Framework":http://framework.zend.com/manual/ru/project-structure.project.html.
+2. Git clone the *Whyte* library into the folder::
 
-# Переместитесь в папку с библиотеками проекта на Zend Framework. По идее, эта папка должна быть в _include_path_ проекта:
-@cd myzfproject/library@
-# Установите проект в папку:
-@git clone git://github.com/yentsun/Whyte.git@
-# В файле конфигурации _myzfproject/configs/application.ini_ добавьте *autoloadernamespaces* для автоматической загрузки классов (этот пункт не обязателен, вы можете просто использовать _require_):
-@autoloadernamespaces.whyte = "Whyte_"@
+    git clone git://github.com/yentsun/Whyte.git
 
-Готово! Теперь вы можете наследовать классы *Whyte_Model_Entity* и *Whyte_Model_Mapper* в своей модели/моделях:
-<pre><code class="php">
-class Application_Model_Something extends Whyte_Model_Entity {
+3. If your project follows `the recommended structure
+   <http://framework.zend.com/manual/ru/project-structure.project.html>`_,
+   in your ``application/configs/application.ini`` add *autoloadernamespaces*
+   for class autoloading::
 
-}
-</code></pre>
+    autoloadernamespaces.whyte = "Whyte_"
 
-h1. Пример использования
+   Or you can simply add a ``require`` statement where appropriate.
 
-Допустим, у нас есть приложение с сущностью _"пользователь"_. _Пользователь_ имеет следующие свойства:
+Done! Now you can inherit *Whyte_Model_Entity* and *Whyte_Model_Mapper* classes
+in your models/mappers::
 
-* идентификатор (число больше 0)
-* email-адрес, использующийся в качестве логина
-* md5-закодированный пароль (шестнадцатеричная строка длиной в 32 символа)
-* имя (произвольная строка)
-* дату рождения (строка в формате "ГГГГ-ММ-ДД")
+    <?php
 
-При этом все свойства должны быть заполнены значениями. Модель для такой сущности может выглядеть следующим образом (в файле @myapp/application/models/User.php@):
+    class Application_Model_Something extends Whyte_Model_Entity {
 
-<pre><code class="php">
-class Application_Model_User extends Whyte_Model_Entity {
+    ...
 
-    'id' => array(array('GreaterThan',0)),
-    'email' => array('EmailAddress','presence' => 'required'),
-    'digest' => array('Hex',array('StringLength',32,32),'presence' => 'required'),
-    'name' => array(),
-    'birthDate' => array(array('Date','YYYY-MM-dd'))
-}
-</code></pre>
-
-"Описание" каждого свойства - это _цепь фильтров/валидаторов_, точно такая же, которую мы можем использовать в "Zend_Filter_Input":http://zendframework.com/manual/ru/zend.filter.input.html#zend.filter.input.declaring. Таким образом, мы раз и навсегда указываем какие свойства сущность может иметь и какие значения эти свойства могут принимать. Если мы хотим принять данные _пользователя_ из какого-либо источника (POST, База данных и т. д.) и проверить их на верность нам достаточно сделать следующее:
-
-<pre><code class="php">
-
-    $rawUserData = array(
-        'id' => 2,
-        'email' => 'some@address.com',
-        'digest' => 'password',
-        'name' => 'Иван',
-        'birthDate' => '1984-05-01'
-    );
-
-    $user = new Application_Model_User($rawUserData);
-    if ($user->hasErrors())
-        echo 'Неверные данные пользователя!';
-</code></pre>
-
-В этом случае мы увидим сообщение @Неверные данные пользователя!@, потому что в качестве пароля у нас простая строка, а не md5-хэш. Таким образом, мы можем даже отказаться от Zend_Form в своих приложениях - мы просто проверяем сущность, созданную из данных "с улицы", на ошибки. Обратите внимание, что модель сущности _пользователя_, описанная в примере, подойдет только для *существующей* базы пользователей. С помощью нее мы не можем регистрировать новых. Однако позже в примерах, я объясню как легко сделать и регистрацию новых пользователей.
+    }
 
 
 Indices and tables

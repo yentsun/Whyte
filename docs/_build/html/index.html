@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to Whyte’s documentation! &mdash; Whyte 0.1 documentation</title>
+    <title>About &mdash; Whyte 0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -47,18 +47,54 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="welcome-to-whyte-s-documentation">
-<h1>Welcome to Whyte&#8217;s documentation!<a class="headerlink" href="#welcome-to-whyte-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>This <tt class="docutils literal"><span class="pre">model</span></tt> abstractions were made with two things in mind:</p>
+  <div class="section" id="about">
+<h1>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h1>
+<p><strong>Whyte Model</strong> is a set of two abstract classes used as a base for <em>model</em>
+layer implementation in <a class="reference external" href="http://framework.zend.com/">Zend Framework</a>.
+It was made with two things in mind:</p>
 <ol class="arabic simple">
-<li>Legacy Databases</li>
-<li>Forms without Zend_Form</li>
+<li><em>Legacy Databases</em>, where you rather map models to existing table fields.</li>
+<li>Render and validate <em>forms without Zend_Form</em>.</li>
 </ol>
 <p>Contents:</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="entity.html"> entity</a></li>
 </ul>
+</div>
+</div>
+<div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>These are the steps for a unix-system. As they are trivial, one should be fine
+following them on Windows.</p>
+<ol class="arabic">
+<li><p class="first">Navigate to your ZF-project&#8217;s library folder. It should be on <em>include_path</em>
+basically:</p>
+<div class="highlight-python"><pre>cd myzfproject/library</pre>
+</div>
+</li>
+<li><p class="first">Git clone the <em>Whyte</em> library into the folder:</p>
+<div class="highlight-python"><pre>git clone git://github.com/yentsun/Whyte.git</pre>
+</div>
+</li>
+<li><p class="first">If your project follows <a class="reference external" href="http://framework.zend.com/manual/ru/project-structure.project.html">the recommended structure</a>,
+in your <tt class="docutils literal"><span class="pre">application/configs/application.ini</span></tt> add <em>autoloadernamespaces</em>
+for class autoloading:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">autoloadernamespaces</span><span class="o">.</span><span class="n">whyte</span> <span class="o">=</span> <span class="s">&quot;Whyte_&quot;</span>
+</pre></div>
+</div>
+<p>Or you can simply add a <tt class="docutils literal"><span class="pre">require</span></tt> statement where appropriate.</p>
+</li>
+</ol>
+<p>Done! Now you can inherit <em>Whyte_Model_Entity</em> and <em>Whyte_Model_Mapper</em> classes
+in your models/mappers:</p>
+<div class="highlight-python"><pre>&lt;?php
+
+class Application_Model_Something extends Whyte_Model_Entity {
+
+...
+
+}</pre>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
@@ -78,9 +114,10 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Welcome to Whyte&#8217;s documentation!</a><ul>
+<li><a class="reference internal" href="#">About</a><ul>
 </ul>
 </li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 
