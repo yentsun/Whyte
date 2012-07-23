@@ -3,6 +3,7 @@
 **Whyte Model** is a set of two abstract classes used as a base for *model*
 layer implementation in `Zend Framework <http://framework.zend.com/>`_.
 
+============
 Installation
 ============
 
