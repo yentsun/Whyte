@@ -11,15 +11,18 @@ following them on Windows.
 
 1. Navigate to your ZF-project's library folder. It should be on *include_path*
    basically:
+
     cd myzfproject/library
 
 2. Git clone the *Whyte* library into the folder:
+
     git clone git://github.com/yentsun/Whyte.git
 
 3. If your project follows `the recommended structure
 <http://framework.zend.com/manual/ru/project-structure.project.html>`_,
 in your ``application/configs/application.ini`` add *autoloadernamespaces*
 for class autoloading:
+
     autoloadernamespaces.whyte = Whyte_
 
 Or you can simply add a ``require`` statement where appropriate.
@@ -27,6 +30,7 @@ Or you can simply add a ``require`` statement where appropriate.
 Done! Now you can inherit *Whyte_Model_Entity* and *Whyte_Model_Mapper* classes
 in your models/mappers:
 
+```php
     <?php
 
     class Application_Model_Something extends Whyte_Model_Entity {
