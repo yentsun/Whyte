@@ -1,0 +1,1 @@
+Search.setIndex({objects:{},terms:{legaci:0,"abstract":0,mind:0,indic:0,blah:1,tabl:0,entiti:0,index:0,welcom:0,titl:[],whyte:0,two:0,content:0,document:0,modul:0,form:0,search:0,made:0,zend_form:0,thing:0,without:0,thi:0,were:0,databas:0,model:0,page:0},objtypes:{},titles:["Welcome to Whyte&#8217;s documentation!","Blah"],objnames:{},filenames:["index","entity"]})
