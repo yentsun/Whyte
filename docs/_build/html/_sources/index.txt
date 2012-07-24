@@ -10,8 +10,13 @@ About
 layer implementation in `Zend Framework <http://framework.zend.com/>`_.
 It was made with two things in mind:
 
-1. *Legacy Databases*, where you rather map models to existing table fields.
-2. Render and validate *forms without Zend_Form*.
+1. *Legacy Database Structures*, where you rather map objects to existing table
+   fields, but not use their original names like ``$this->tbl_something``
+   along with bare ``Zend_DB_Table_Row``
+2. Manage *forms without Zend_Form*. Again, if you face an already
+   coded html-template with complex forms, you will be getting hard times
+   tailoring ``Zend_Form`` to output exactly the markup you need. Whyte Model
+   doesn't mess with markup but can validate and repopulate the form.
 
 Contents:
 
@@ -32,7 +37,11 @@ following them on Windows.
 
     cd myzfproject/library
 
-2. Git clone the *Whyte* library into the folder::
+   .. admonition:: Note
+
+      Whyte Model assumes you have *Zend Autoloader* employed.
+
+2. Download the package into the folder::
 
     git clone git://github.com/yentsun/Whyte.git
 

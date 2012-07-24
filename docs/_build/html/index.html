@@ -53,8 +53,13 @@
 layer implementation in <a class="reference external" href="http://framework.zend.com/">Zend Framework</a>.
 It was made with two things in mind:</p>
 <ol class="arabic simple">
-<li><em>Legacy Databases</em>, where you rather map models to existing table fields.</li>
-<li>Render and validate <em>forms without Zend_Form</em>.</li>
+<li><em>Legacy Database Structures</em>, where you rather map objects to existing table
+fields, but not use their original names like <tt class="docutils literal"><span class="pre">$this-&gt;tbl_something</span></tt>
+along with bare <tt class="docutils literal"><span class="pre">Zend_DB_Table_Row</span></tt></li>
+<li>Manage <em>forms without Zend_Form</em>. Again, if you face an already
+coded html-template with complex forms, you will be getting hard times
+tailoring <tt class="docutils literal"><span class="pre">Zend_Form</span></tt> to output exactly the markup you need. Whyte Model
+doesn&#8217;t mess with markup but can validate and repopulate the form.</li>
 </ol>
 <p>Contents:</p>
 <div class="toctree-wrapper compound">
@@ -72,8 +77,12 @@ following them on Windows.</p>
 basically:</p>
 <div class="highlight-python"><pre>cd myzfproject/library</pre>
 </div>
+<div class="admonition-note admonition">
+<p class="first admonition-title">Note</p>
+<p class="last">Whyte Model assumes you have <em>Zend Autoloader</em> employed.</p>
+</div>
 </li>
-<li><p class="first">Git clone the <em>Whyte</em> library into the folder:</p>
+<li><p class="first">Download the package into the folder:</p>
 <div class="highlight-python"><pre>git clone git://github.com/yentsun/Whyte.git</pre>
 </div>
 </li>

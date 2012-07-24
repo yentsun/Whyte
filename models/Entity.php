@@ -239,40 +239,28 @@ abstract class Whyte_Model_Entity {
     }
 
     /**
-     * Clear 'functions' cache with entity class name as tag
+     * Clear cache with entity class name as tag. Should be specific
+     * per project
      * @static
      * @param $class_name
      */
-    private static function _clear_cache($class_name) {
-
-        $cache_manager = Zend_Registry::get('cache_manager');
-        $cache = $cache_manager->getCache('functions');
-        $cache->clean(
-            Zend_Cache::CLEANING_MODE_MATCHING_TAG,
-            array($class_name)
-        );
-    }
+    private static function _clear_cache($class_name) {}
 
     /**
-     * If entity has 'to_search_doc' method, perform addition to search index
+     * If entity has 'to_search_doc' method, perform addition to search index.
+     * Should be specific per project
      * @param null $id
      */
-    private function _add_to_search_index($id=null) {
-
-        if (method_exists($this, 'to_search_doc')) {
-            $search = new Application_Model_Search(get_called_class());
-            $search->save_document($this->to_search_doc($id));
-        }
-    }
-
-    private function _remove_from_search_index($id) {
-
-        $search = new Application_Model_Search(get_called_class());
-        $search->delete($id);
-    }
+    private function _add_to_search_index($id=null) {}
 
     /**
-     * Simple count all entity records
+     * Remove entity record from search index. Should be specific per project
+     * @param $id
+     */
+    private function _remove_from_search_index($id) {}
+
+    /**
+     * Count all entity records
      * @static
      * @return int
      */
@@ -285,8 +273,9 @@ abstract class Whyte_Model_Entity {
     }
 
     /**
-     * Fetch all entity records as instances
+     * Fetch all entity records as objects
      * @static
+     * @param null $limit
      * @return array
      */
     public static function fetch_all($limit=null) {
@@ -298,20 +287,24 @@ abstract class Whyte_Model_Entity {
         $result_set = array();
         foreach ($rows as $row) {
             $entity = new $classname($mapper->row_to_array($row));
+            //save the row for further access to additional properties
             $entity->row = $row;
             $result_set[$entity->id] = $entity;
         }
         return $result_set;
     }
 
-    public static function search($query) {
-
-        $search = new Application_Model_Search(get_called_class());
-        return $search->perform_search($query);
-    }
+    /**
+     * Search index for entities. Should be specific per project
+     * @static
+     * @param $query
+     */
+    public static function search($query) {}
 
     /**
-     * Return a dummy instance of an entity with all properties as empty strings
+     * Return a dummy instance of an entity with all properties as empty
+     * strings. Useful for populating an empty form for a new record while
+     * keeping the same view for create/update.
      * @static
      * @return mixed
      */
