@@ -7,8 +7,10 @@ It was made with two things in mind:
 1. **Legacy Database Structures**, where you rather map objects to existing table
    fields, but not use their original names like ``$this->tbl_something``
    along with bare ``Zend_DB_Table_Row``
-2. Manage **forms without ``Zend_Form``**. Again, if you face an already
+2. Manage **forms without Zend_Form**. Again, if you face an already
    coded html-template with complex forms, you will be getting hard times
    tailoring ``Zend_Form`` to output exactly the markup you need. Whyte Model
    doesn't mess with markup (in fact it doesn't render anything) but can
    validate and repopulate the form.
+
+Documentation with examples can be found at http://whyte.readthedocs.org/
