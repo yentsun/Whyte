@@ -1,7 +1,5 @@
 <?php
 
-require '../Exception/EntityNotValid.php';
-
 abstract class Whyte_Model_Entity {
 
     protected $_mapper_class = null;
@@ -296,4 +294,10 @@ abstract class Whyte_Model_Entity {
             $dummy->$name = '';
         return $dummy;
     }
+}
+
+class Whyte_Exception_EntityNotValid extends Exception {
+
+    public $messages = null;
+    public $original_data = null;
 }
