@@ -1,6 +1,6 @@
 <?php
 
-require '../exceptions/EntityNotValid.php';
+require '../Exception/EntityNotValid.php';
 
 abstract class Whyte_Model_Entity {
 
