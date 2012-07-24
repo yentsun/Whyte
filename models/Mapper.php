@@ -2,14 +2,13 @@
 /**
  * An abstract class used to back model mappers
  */
-abstract class Application_Model_Mapper {
+abstract class Whyte_Model_Mapper {
 
     protected $_map = array();
     protected $_gateway = NULL;
     protected $_table_name = NULL;
     protected $_mappers = NULL;
     protected $_factory_errors = array();
-    public $paginator = NULL;
 
     public function __construct(Zend_Db_Table_Abstract $gateway=NULL) {
 
@@ -99,8 +98,7 @@ abstract class Application_Model_Mapper {
      * @param Application_Model_Entity $entity
      * @param                          $key_property_name
      */
-    public function update(Application_Model_Entity $entity,
-        $key_property_name) {
+    public function update(Application_Model_Entity $entity, $key_property_name) {
 
         $this->_gateway->update(
             $this->_to_mapped_array($entity),
@@ -120,33 +118,6 @@ abstract class Application_Model_Mapper {
             ->getAdapter()
             ->quoteInto($this->_map[$property].' = ?', $value);
         return $this->_gateway->delete($where);
-    }
-
-    protected function _paginate(Zend_Db_Select $select, $page, $perPage) {
-
-        Zend_Paginator::setDefaultScrollingStyle('Elastic');
-        Zend_View_Helper_PaginationControl::setDefaultViewPartial('_pagination.phtml');
-        $paginator = Zend_Paginator::factory($select);
-        $paginator->setCurrentPageNumber($page);
-        $paginator->setItemCountPerPage($perPage);
-        $paginator->setPageRange(Zend_Registry::get('settings')->pagination->items->range);
-
-        $this->paginator = $paginator;
-        $fO = array('lifetime' => 21600, 'automatic_serialization' => true);
-        $bO = array('cache_dir'=>APPLICATION_PATH.'/cache/paginator');
-        $cache = Zend_cache::factory('Core', 'File', $fO, $bO);
-        Zend_Paginator::setCache($cache);
-
-        return $paginator->getItemsByPage($page);
-    }
-
-    protected function _forge_entities($rows) {
-
-        $result = array();
-        foreach ($rows as $row) {
-            $result[] = $this->_factory($row);
-        }
-        return $result;
     }
 
     public function count_all($string=null, $value=null) {

@@ -101,26 +101,6 @@ abstract class Whyte_Model_Entity {
         return $this->_validators[$name];
     }
 
-    /**
-     * If entity has 'datetime' property, return Zend_Date->toString() in given
-     * format
-     * @param string $format
-     * @return null|string
-     */
-    public function datetime($format=null, $property_name='datetime',
-        $input_format=null) {
-
-        $format = $format ? $format : Zend_Date::DATE_MEDIUM;
-        if (isset($this->_properties[$property_name]))
-            if ($this->_properties[$property_name]) {
-                if ($this->$property_name != '0000-00-00') {
-                    $date = new Zend_Date($this->$property_name, $input_format);
-                    return $date->toString($format);
-                }
-            }
-        return null;
-    }
-
     /*Get required properties based on validators*/
     public static function get_required() {
 
@@ -170,7 +150,7 @@ abstract class Whyte_Model_Entity {
      * If nothing is found - return NULL
      * @static
      * @param $id
-     * @return Application_Model_Entity|null
+     * @return Whyte_Model_Entity|null
      */
     public static function fetch($id) {
 
@@ -190,7 +170,7 @@ abstract class Whyte_Model_Entity {
      * @static
      * @param array $data
      * @param       $id
-     * @return \Application_Model_Entity|array
+     * @return Whyte_Model_Entity|array
      */
     public static function update(array $data, $id, $add_to_index=true) {
 
@@ -239,7 +219,7 @@ abstract class Whyte_Model_Entity {
     }
 
     /**
-     * Clear cache with entity class name as tag. Should be specific
+     * Clear cache with entity class name as tag. Should be overridden
      * per project
      * @static
      * @param $class_name
@@ -254,7 +234,7 @@ abstract class Whyte_Model_Entity {
     private function _add_to_search_index($id=null) {}
 
     /**
-     * Remove entity record from search index. Should be specific per project
+     * Remove entity record from search index. Should be overridden per project
      * @param $id
      */
     private function _remove_from_search_index($id) {}
@@ -295,7 +275,7 @@ abstract class Whyte_Model_Entity {
     }
 
     /**
-     * Search index for entities. Should be specific per project
+     * Search index for entities. Should be overridden per project
      * @static
      * @param $query
      */
