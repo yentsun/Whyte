@@ -3,29 +3,27 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. image:: http://yentsun.com/redmine/attachments/download/101/logo-final-v01.png
+
 About
 =====
 
-**Whyte Model** is a set of two abstract classes used as a base for *model*
+*"Whyte Model"* is a set of two abstract classes used as a base for *model*
 layer implementation in `Zend Framework <http://framework.zend.com/>`_.
 It was made with two things in mind:
 
-1. *Legacy Database Structures*, where you rather map objects to existing table
+1. **Legacy Database Structures**, where you rather map objects to existing table
    fields, but not use their original names like ``$this->tbl_something``
    along with bare ``Zend_DB_Table_Row``
-2. Manage *forms without Zend_Form*. Again, if you face an already
+
+2. **Define your model once** per project, and then be able to check its instances
+   for validity anywhere. Be it POST data, parsed xml or external database.
+
+3. Manage **forms without Zend_Form**. Again, if you face an already
    coded html-template with complex forms, you will be getting hard times
    tailoring ``Zend_Form`` to output exactly the markup you need. Whyte Model
    doesn't mess with markup (in fact it doesn't render anything) but can
    validate and repopulate the form.
-
-Contents:
-
-.. toctree::
-   :maxdepth: 2
-
-    entity <entity>
-    mapper
 
 Installation
 ============
@@ -42,7 +40,7 @@ following them on Windows.
 
       Whyte Model assumes you have *Zend Autoloader* employed.
 
-2. Download the package into the folder::
+2. Now let git make the folder and download the package into it::
 
     git clone git://github.com/yentsun/Whyte.git
 
@@ -55,7 +53,7 @@ following them on Windows.
 
    Or you can simply add a ``require`` statement where appropriate.
 
-Done! Now you can inherit *Whyte_Model_Entity* and *Whyte_Model_Mapper* classes
+Done! You now can inherit *Whyte_Model_Entity* and *Whyte_Model_Mapper* classes
 in your models/mappers::
 
     <?php
@@ -66,11 +64,11 @@ in your models/mappers::
 
     }
 
+Read on:
 
-Indices and tables
-==================
+.. toctree::
+   :maxdepth: 1
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+    Use cases <use_cases>
+    Entity class methods <entity>
+    Mapper class methods <mapper>

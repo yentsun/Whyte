@@ -47,26 +47,24 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="about">
+  <img alt="http://yentsun.com/redmine/attachments/download/101/logo-final-v01.png" src="http://yentsun.com/redmine/attachments/download/101/logo-final-v01.png" />
+<div class="section" id="about">
 <h1>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h1>
-<p><strong>Whyte Model</strong> is a set of two abstract classes used as a base for <em>model</em>
+<p><em>&#8220;Whyte Model&#8221;</em> is a set of two abstract classes used as a base for <em>model</em>
 layer implementation in <a class="reference external" href="http://framework.zend.com/">Zend Framework</a>.
 It was made with two things in mind:</p>
 <ol class="arabic simple">
-<li><em>Legacy Database Structures</em>, where you rather map objects to existing table
+<li><strong>Legacy Database Structures</strong>, where you rather map objects to existing table
 fields, but not use their original names like <tt class="docutils literal"><span class="pre">$this-&gt;tbl_something</span></tt>
 along with bare <tt class="docutils literal"><span class="pre">Zend_DB_Table_Row</span></tt></li>
-<li>Manage <em>forms without Zend_Form</em>. Again, if you face an already
+<li><strong>Define your model once</strong> per project, and then be able to check its instances
+for validity anywhere. Be it POST data, parsed xml or external database.</li>
+<li>Manage <strong>forms without Zend_Form</strong>. Again, if you face an already
 coded html-template with complex forms, you will be getting hard times
 tailoring <tt class="docutils literal"><span class="pre">Zend_Form</span></tt> to output exactly the markup you need. Whyte Model
-doesn&#8217;t mess with markup but can validate and repopulate the form.</li>
+doesn&#8217;t mess with markup (in fact it doesn&#8217;t render anything) but can
+validate and repopulate the form.</li>
 </ol>
-<p>Contents:</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="entity.html"> entity</a></li>
-</ul>
-</div>
 </div>
 <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
@@ -82,7 +80,7 @@ basically:</p>
 <p class="last">Whyte Model assumes you have <em>Zend Autoloader</em> employed.</p>
 </div>
 </li>
-<li><p class="first">Download the package into the folder:</p>
+<li><p class="first">Now let git make the folder and download the package into it:</p>
 <div class="highlight-python"><pre>git clone git://github.com/yentsun/Whyte.git</pre>
 </div>
 </li>
@@ -95,7 +93,7 @@ for class autoloading:</p>
 <p>Or you can simply add a <tt class="docutils literal"><span class="pre">require</span></tt> statement where appropriate.</p>
 </li>
 </ol>
-<p>Done! Now you can inherit <em>Whyte_Model_Entity</em> and <em>Whyte_Model_Mapper</em> classes
+<p>Done! You now can inherit <em>Whyte_Model_Entity</em> and <em>Whyte_Model_Mapper</em> classes
 in your models/mappers:</p>
 <div class="highlight-python"><pre>&lt;?php
 
@@ -105,14 +103,12 @@ class Application_Model_Something extends Whyte_Model_Entity {
 
 }</pre>
 </div>
-</div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
-<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
-<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+<p>Read on:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="entity.html"> Entity class methods</a></li>
 </ul>
+</div>
 </div>
 
 
@@ -123,11 +119,10 @@ class Application_Model_Something extends Whyte_Model_Entity {
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">About</a><ul>
+<li><a class="reference internal" href="#">About</a></li>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
 </ul>
 </li>
-<li><a class="reference internal" href="#installation">Installation</a></li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 
   <h4>Next topic</h4>
