@@ -162,6 +162,18 @@ abstract class Whyte_Model_Entity {
             return null;
     }
 
+    private static function _fetch_clean($id) {
+
+        $classname = get_called_class();
+        $dummy = new $classname();
+        $mapper = new $dummy->_mapper_class;
+        $data_array = $mapper->get('id', (int) $id);
+        if ($data_array)
+            return new $classname($data_array);
+        else
+            return null;
+    }
+
     /**
      * Update existing entity record and return the updated instance. If data
      * to update is invalid, return error array.
@@ -173,12 +185,16 @@ abstract class Whyte_Model_Entity {
     public static function update(array $data, $id, $add_to_index=true) {
 
         $classname = get_called_class();
-        $entity = $classname::fetch($id);
-        foreach ($data as $name=>$value) {
-            //update everything except 'id'
-            if (array_key_exists($name, $entity->_validators) && $name != 'id')
-                $entity->$name = $value;
-        }
+        $entity = $classname::_fetch_clean($id);
+        if ($entity instanceof self) {
+            foreach ($data as $name=>$value) {
+                //update everything except 'id'
+                if (array_key_exists($name, $entity->_validators) &&
+                    $name != 'id')
+                    $entity->$name = $value;
+            }
+        } else
+            throw new Whyte_Exception_EntityNotFound();
         if ($entity->has_errors()) {
             $exception = new Whyte_Exception_EntityNotValid('Bad data!');
             $exception->messages = $entity->_errors;
@@ -301,3 +317,5 @@ class Whyte_Exception_EntityNotValid extends Exception {
     public $messages = null;
     public $original_data = null;
 }
+
+class Whyte_Exception_EntityNotFound extends Exception {}
