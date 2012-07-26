@@ -9,7 +9,8 @@ It was made with two things in mind:
    along with bare ``Zend_DB_Table_Row``
 
 2. **Define your model once** per project, and then be able to check its instances
-   for validity anywhere. Be it POST data, parsed xml or external database.
+   for validity anywhere. Be it *POST* data, parsed *xml* or external
+   database input.
 
 3. Manage **forms without Zend_Form**. Again, if you face an already
    coded html-template with complex forms, you will be getting hard times
