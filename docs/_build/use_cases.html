@@ -1,0 +1,208 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Use cases &mdash; Whyte 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Whyte 0.1 documentation" href="index.html" />
+    <link rel="next" title="Blah" href="entity.html" />
+    <link rel="prev" title="About" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="entity.html" title="Blah"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="About"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Whyte 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="use-cases">
+<h1>Use cases<a class="headerlink" href="#use-cases" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="defining-a-model">
+<h2>Defining a model<a class="headerlink" href="#defining-a-model" title="Permalink to this headline">¶</a></h2>
+<p>Lets imagine we have a <em>User</em> model in our project. We could define it in
+<tt class="docutils literal"><span class="pre">application/models/User.php</span></tt> using <em>Whyte Model</em> like this:</p>
+<div class="highlight-python"><pre>&lt;?php
+
+class Application_Model_User extends Whyte_Model_Entity {
+
+    // we'll mention this line below
+    protected $_mapper_class = 'Application_Model_UserMapper';
+
+    protected $_properties = array(
+        'id'=&gt; array('Int', array('GreaterThan', 0)),
+        'email'=&gt; array('EmailAddress', 'presence'=&gt;'required'),
+        'password_hash'=&gt; array('Hex', array('StringLength', 40, 40),
+                                'presence'=&gt; 'required'),
+        'first_name'=&gt; array(),
+        'last_name'=&gt; array(),
+        'phone'=&gt; array(array('StringLength', 7, 18), 'presence'=&gt;'required'),
+        'registration_date'=&gt; array(array('Date', 'YYYY-MM-dd')),
+        'job_title'=&gt; array('allowEmpty'=&gt; true),
+        'status_id'=&gt; 'Int' // like 0 - inactive; 1 - normal; 2 - admin
+    );
+}</pre>
+</div>
+<p>You can be sure that this is the only time we go through the <em>User</em> model
+properties in the whole project. Oh wait! We have to map our properties to a
+DB table fields. Let us do this in the <em>mapper</em>
+<tt class="docutils literal"><span class="pre">application/models/UserMapper.php</span></tt>:</p>
+<div class="highlight-python"><pre>&lt;?php
+
+class Application_Model_UserMapper extends Whyte_Model_Mapper {
+
+    protected $_table_name = 'user';
+
+    protected $_map = array(
+        'id'=&gt; 'tbl_id',
+        'email'=&gt; 'tbl_login',
+        'password_hash'=&gt; 'tbl_password',
+        'first_name'=&gt; 'tbl_name',
+        'last_name'=&gt; 'tbl_family',
+        'phone'=&gt; 'tbl_phone',
+        'registration_date'=&gt; 'tbl_date',
+        'club'=&gt; 'tbl_club',
+        'job_title'=&gt; 'tbl_job',
+        'status_id'=&gt; 'tbl_show_it'
+    );
+}</pre>
+</div>
+<p>See those <tt class="docutils literal"><span class="pre">tbl_</span></tt> prefixes? The table fields a mighty old-school DB admin before
+me defined. In this mapper we <em>connected</em> our model properties to DB table
+fields. If the DB table fields match the model ones, the use of a mapper can be
+skipped.</p>
+</div>
+<div class="section" id="getting-required-fields-for-the-form">
+<h2>Getting required fields for the form<a class="headerlink" href="#getting-required-fields-for-the-form" title="Permalink to this headline">¶</a></h2>
+<p>Now let us work with the form. Say we have a ready form in html and we&#8217;d like
+to mark required fields in it. In our <em>controller</em> we can:</p>
+<div class="highlight-python"><pre>...
+$this-&gt;view-&gt;required = Application_Model_User::get_required();
+...</pre>
+</div>
+<p>For the <em>User</em> model we defined earlier the <tt class="docutils literal"><span class="pre">required</span></tt> view variable will have
+<tt class="docutils literal"><span class="pre">'email',</span> <span class="pre">'password_hash',</span> <span class="pre">'first_name',</span> <span class="pre">'last_name',</span> <span class="pre">'phone',</span>
+<span class="pre">'registration_date',</span> <span class="pre">'status_id'</span></tt>. Not all of those fields will be displayed
+in our form for the user input but those are the fields required for the model.
+We are going to add the rest in our code before validation.</p>
+<p>Then, assuming fields of our form are named exactly as our <em>User</em> model
+properties, in our form view we add the following lines:</p>
+<div class="highlight-python"><pre>&lt;script type="text/javascript"&gt;
+    var required = &lt;?= json_encode($this-&gt;required) ?&gt;;
+    $('form label, form input, form div, form select').each(function(){
+        var name = $(this).attr('name');
+        if (jQuery.inArray(name, required) !== -1) {
+            $(this).addClass('required');
+            $('label[for="'+name+'"]').append('&lt;span class="req"&gt; *&lt;/span&gt;');
+        }
+    });
+&lt;/script&gt;</pre>
+</div>
+<p>This is just an example of processing and marking required fields of a form
+with javascript and jquery. One can implement it even better.</p>
+</div>
+<div class="section" id="validating-the-form-input">
+<h2>Validating the form input<a class="headerlink" href="#validating-the-form-input" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Use cases</a><ul>
+<li><a class="reference internal" href="#defining-a-model">Defining a model</a></li>
+<li><a class="reference internal" href="#getting-required-fields-for-the-form">Getting required fields for the form</a></li>
+<li><a class="reference internal" href="#validating-the-form-input">Validating the form input</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">About</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="entity.html"
+                        title="next chapter">Blah</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/use_cases.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="entity.html" title="Blah"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="About"
+             >previous</a> |</li>
+        <li><a href="index.html">Whyte 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Max Korinets.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

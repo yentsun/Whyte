@@ -1,0 +1,172 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>About &mdash; Whyte 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Whyte 0.1 documentation" href="#" />
+    <link rel="next" title="Use cases" href="use_cases.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="use_cases.html" title="Use cases"
+             accesskey="N">next</a> |</li>
+        <li><a href="#">Whyte 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <img alt="http://yentsun.com/redmine/attachments/download/101/logo-final-v01.png" src="http://yentsun.com/redmine/attachments/download/101/logo-final-v01.png" />
+<div class="section" id="about">
+<h1>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h1>
+<p><em>&#8220;Whyte Model&#8221;</em> is a set of two abstract classes used as a base for <em>model</em>
+layer implementation in <a class="reference external" href="http://framework.zend.com/">Zend Framework</a>.
+It was made with two things in mind:</p>
+<ol class="arabic simple">
+<li><strong>Legacy Database Structures</strong>, where you rather map objects to existing table
+fields, but not use their original names like <tt class="docutils literal"><span class="pre">$this-&gt;tbl_something</span></tt>
+along with bare <tt class="docutils literal"><span class="pre">Zend_DB_Table_Row</span></tt></li>
+<li><strong>Define your model once</strong> per project, and then be able to check its instances
+for validity anywhere. Be it <em>POST</em> data, parsed <em>xml</em> or external
+database input.</li>
+<li>Manage <strong>forms without Zend_Form</strong>. Again, if you face an already
+coded html-template with complex forms, you will be getting hard times
+tailoring <tt class="docutils literal"><span class="pre">Zend_Form</span></tt> to output exactly the markup you need. Whyte Model
+doesn&#8217;t mess with markup (in fact it doesn&#8217;t render anything) but can
+validate and repopulate the form.</li>
+</ol>
+</div>
+<div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>These are the steps for a unix-system. As they are trivial, one should be fine
+following them on Windows.</p>
+<ol class="arabic">
+<li><p class="first">Navigate to your ZF-project&#8217;s library folder. It should be on <em>include_path</em>
+basically:</p>
+<div class="highlight-python"><pre>cd myzfproject/library</pre>
+</div>
+<div class="admonition-note admonition">
+<p class="first admonition-title">Note</p>
+<p class="last">Whyte Model assumes you have <em>Zend Autoloader</em> employed.</p>
+</div>
+</li>
+<li><p class="first">Now let git make the folder and download the package into it:</p>
+<div class="highlight-python"><pre>git clone git://github.com/yentsun/Whyte.git</pre>
+</div>
+</li>
+<li><p class="first">If your project follows <a class="reference external" href="http://framework.zend.com/manual/ru/project-structure.project.html">the recommended structure</a>,
+in your <tt class="docutils literal"><span class="pre">application/configs/application.ini</span></tt> add <em>autoloadernamespaces</em>
+for class autoloading:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">autoloadernamespaces</span><span class="o">.</span><span class="n">whyte</span> <span class="o">=</span> <span class="s">&quot;Whyte_&quot;</span>
+</pre></div>
+</div>
+<p>Or you can simply add a <tt class="docutils literal"><span class="pre">require</span></tt> statement where appropriate.</p>
+</li>
+</ol>
+<p>Done! You now can inherit <em>Whyte_Model_Entity</em> and <em>Whyte_Model_Mapper</em> classes
+in your models/mappers:</p>
+<div class="highlight-python"><pre>&lt;?php
+
+class Application_Model_Something extends Whyte_Model_Entity {
+
+...
+
+}</pre>
+</div>
+<p>Read on:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="use_cases.html"> Use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="entity.html"> Entity class methods</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">About</a></li>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+</ul>
+</li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="use_cases.html"
+                        title="next chapter">Use cases</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="use_cases.html" title="Use cases"
+             >next</a> |</li>
+        <li><a href="#">Whyte 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Max Korinets.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
