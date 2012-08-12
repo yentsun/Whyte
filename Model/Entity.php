@@ -102,8 +102,8 @@ abstract class Whyte_Model_Entity {
     /*Get required properties based on validators*/
     public static function get_required() {
 
-        $classname = get_called_class();
-        $dummy = new $classname();
+        $class_name = get_called_class();
+        $dummy = new $class_name();
         $required_properties = $dummy->_validators;
         foreach ($required_properties as $name=>$rules) {
             if (isset($rules['allowEmpty']))
@@ -123,8 +123,8 @@ abstract class Whyte_Model_Entity {
      */
     public static function create(array $data, $add_to_index=true) {
 
-        $classname = get_called_class();
-        $entity = new $classname($data);
+        $class_name = get_called_class();
+        $entity = new $class_name($data);
         if ($entity->has_errors()){
             $array_of_errors = array();
             foreach ($entity->_errors as $key=>$array)
@@ -136,7 +136,8 @@ abstract class Whyte_Model_Entity {
             throw $exception;
         }
         $mapper = new $entity->_mapper_class;
-        self::_clear_cache($classname);
+        if (method_exists($class_name, '_clear_cache'))
+            $class_name::_clear_cache($class_name);
         $new_id = $mapper->add($entity);
         if ($add_to_index && is_int($new_id))
             $entity->_add_to_search_index($new_id);
@@ -152,24 +153,24 @@ abstract class Whyte_Model_Entity {
      */
     public static function fetch($id) {
 
-        $classname = get_called_class();
-        $dummy = new $classname();
+        $class_name = get_called_class();
+        $dummy = new $class_name();
         $mapper = new $dummy->_mapper_class;
         $data_array = $mapper->get('id', (int) $id);
         if ($data_array)
-            return new $classname($data_array);
+            return new $class_name($data_array);
         else
             return null;
     }
 
     private static function _fetch_clean($id) {
 
-        $classname = get_called_class();
-        $dummy = new $classname();
+        $class_name = get_called_class();
+        $dummy = new $class_name();
         $mapper = new $dummy->_mapper_class;
         $data_array = $mapper->get('id', (int) $id);
         if ($data_array)
-            return new $classname($data_array);
+            return new $class_name($data_array);
         else
             return null;
     }
@@ -184,8 +185,8 @@ abstract class Whyte_Model_Entity {
      */
     public static function update(array $data, $id, $add_to_index=true) {
 
-        $classname = get_called_class();
-        $entity = $classname::_fetch_clean($id);
+        $class_name = get_called_class();
+        $entity = $class_name::_fetch_clean($id);
         if ($entity instanceof self) {
             foreach ($data as $name=>$value) {
                 //update everything except 'id'
@@ -201,10 +202,11 @@ abstract class Whyte_Model_Entity {
             $exception->original_data = $data;
             throw $exception;
         } else {
-            $dummy = new $classname();
+            $dummy = new $class_name();
             $mapper = new $dummy->_mapper_class;
             $mapper->update($entity, 'id');
-            self::_clear_cache($classname);
+            if (method_exists($class_name, '_clear_cache'))
+                $class_name::_clear_cache($class_name);
             if ($add_to_index)
                 $entity->_add_to_search_index();
             return self::fetch($entity->id);
@@ -226,8 +228,10 @@ abstract class Whyte_Model_Entity {
             $rows = $mapper->delete('id', $id);
             if (!$rows)
                 throw new Exception('Now rows were affected!');
-            self::_clear_cache($class_name);
-            self::_remove_from_search_index($id);
+            if (method_exists($class_name, '_clear_cache'))
+                $class_name::_clear_cache($class_name);
+            if (method_exists($class_name, '_remove_from_search_index'))
+                $class_name::_remove_from_search_index($id);
         } else
             throw new Exception('id must be set!');
     }
@@ -238,20 +242,20 @@ abstract class Whyte_Model_Entity {
      * @static
      * @param $class_name
      */
-    private static function _clear_cache($class_name) {}
+    protected static function _clear_cache($class_name) {}
 
     /**
      * If entity has 'to_search_doc' method, perform addition to search index.
      * Should be specific per project
      * @param null $id
      */
-    private function _add_to_search_index($id=null) {}
+    protected function _add_to_search_index($id=null) {}
 
     /**
      * Remove entity record from search index. Should be overridden per project
      * @param $id
      */
-    private function _remove_from_search_index($id) {}
+    protected function _remove_from_search_index($id) {}
 
     /**
      * Count all entity records
@@ -260,8 +264,8 @@ abstract class Whyte_Model_Entity {
      */
     public static function count_all() {
 
-        $classname = get_called_class();
-        $dummy = new $classname();
+        $class_name = get_called_class();
+        $dummy = new $class_name();
         $mapper = new $dummy->_mapper_class;
         return (int) $mapper->count_all();
     }
@@ -274,13 +278,13 @@ abstract class Whyte_Model_Entity {
      */
     public static function fetch_all($limit=null) {
 
-        $classname = get_called_class();
-        $dummy = new $classname();
+        $class_name = get_called_class();
+        $dummy = new $class_name();
         $mapper = new $dummy->_mapper_class;
         $rows = $mapper->fetch_all($limit);
         $result_set = array();
         foreach ($rows as $row) {
-            $entity = new $classname($mapper->row_to_array($row));
+            $entity = new $class_name($mapper->row_to_array($row));
             //save the row for further access to additional properties
             $entity->row = $row;
             $result_set[$entity->id] = $entity;
@@ -304,8 +308,8 @@ abstract class Whyte_Model_Entity {
      */
     public static function dummy() {
 
-        $classname = get_called_class();
-        $dummy = new $classname();
+        $class_name = get_called_class();
+        $dummy = new $class_name();
         foreach ($dummy->_validators as $name=>$validators)
             $dummy->$name = '';
         return $dummy;
