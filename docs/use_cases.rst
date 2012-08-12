@@ -18,7 +18,7 @@ Lets imagine we have a *User* model in our project. We could define it in
         protected $_mapper_class = 'Application_Model_UserMapper';
 
         protected $_properties = array(
-            'id'=> array('Int', array('GreaterThan', 0)),
+            'id'=> array('Int', array('GreaterThan', 0), 'allowEmpty'=>true),
             'email'=> array('EmailAddress', 'presence'=>'required'),
             'password_hash'=> array('Hex', array('StringLength', 40, 40),
                                     'presence'=> 'required'),
@@ -61,8 +61,8 @@ me defined. In this mapper we *connected* our model properties to DB table
 fields. If the DB table fields match the model ones, the use of a mapper can be
 skipped.
 
-Getting required fields for the form
-====================================
+Getting required fields for a form
+==================================
 
 Now let us work with the form. Say we have a ready form in html and we'd like
 to mark required fields in it. In our *controller* we can::
@@ -94,6 +94,58 @@ properties, in our form view we add the following lines::
 This is just an example of processing and marking required fields of a form
 with javascript and jquery. One can implement it even better.
 
-Validating the form input
-=========================
+Validating form input
+=====================
 
+We can easily validate *POST* data from a form with *Whyte Model*. Consider the
+following code in a controller::
+
+    ...
+
+    if ($this->_request->isPost()) {
+        $data = $this->_request->getPost();
+        try {
+            $new_id = Application_Model_User::create($data);
+            $this->flashMessenger->addMessage('New user created');
+            $this->_redirect('/user/success'); // redirect somewhere on success
+        } catch (Whyte_Exception_EntityNotValid $e) {
+            $this->flashMessenger->addMessage('Errors found in the form');
+            $this->view->errors = $e->messages;
+            $this->view->original_data = $e->original_data;
+            // no redirect - stay to repopulate the form fields
+        }
+    }
+
+    ...
+
+Assuming you have all your form fields named accordingly to the model, that is
+basically all you need to check the form input. In case there are errors in
+the form data ``$e->messages`` will have all the error messages in an
+associative array and ``$e->original_data`` will have originally submitted data
+to repopulate the form fields after failure.
+
+As you see, you can validate not only web-form *POST* data, but **any** data
+presented as assoc. array. It may be the result of processing JSON, CSV, etc::
+
+    ...
+
+    if (($handle = self::fopen_utf8($file_path)) !== false) {
+        while (($string = fgets($handle, 1000)) !== false) {
+            $row = str_getcsv($string, $CSV_DELIMITER);
+            $data = array();
+            list(
+                $data['number'],
+                $data['time'],
+                $data['date'],
+                $data['team_one_title'],
+                $data['team_two_title'],
+                $data['game_score']
+            ) = $row;
+            try {
+                Application_Model_Game::create($data);
+            } catch (Whyte_Exception_EntityNotValid $e) {
+                ...
+            }
+        }
+    }
+    ...

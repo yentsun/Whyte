@@ -65,7 +65,7 @@ class Application_Model_User extends Whyte_Model_Entity {
     protected $_mapper_class = 'Application_Model_UserMapper';
 
     protected $_properties = array(
-        'id'=&gt; array('Int', array('GreaterThan', 0)),
+        'id'=&gt; array('Int', array('GreaterThan', 0), 'allowEmpty'=&gt;true),
         'email'=&gt; array('EmailAddress', 'presence'=&gt;'required'),
         'password_hash'=&gt; array('Hex', array('StringLength', 40, 40),
                                 'presence'=&gt; 'required'),
@@ -107,8 +107,8 @@ me defined. In this mapper we <em>connected</em> our model properties to DB tabl
 fields. If the DB table fields match the model ones, the use of a mapper can be
 skipped.</p>
 </div>
-<div class="section" id="getting-required-fields-for-the-form">
-<h2>Getting required fields for the form<a class="headerlink" href="#getting-required-fields-for-the-form" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getting-required-fields-for-a-form">
+<h2>Getting required fields for a form<a class="headerlink" href="#getting-required-fields-for-a-form" title="Permalink to this headline">¶</a></h2>
 <p>Now let us work with the form. Say we have a ready form in html and we&#8217;d like
 to mark required fields in it. In our <em>controller</em> we can:</p>
 <div class="highlight-python"><pre>...
@@ -136,8 +136,58 @@ properties, in our form view we add the following lines:</p>
 <p>This is just an example of processing and marking required fields of a form
 with javascript and jquery. One can implement it even better.</p>
 </div>
-<div class="section" id="validating-the-form-input">
-<h2>Validating the form input<a class="headerlink" href="#validating-the-form-input" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="validating-form-input">
+<h2>Validating form input<a class="headerlink" href="#validating-form-input" title="Permalink to this headline">¶</a></h2>
+<p>We can easily validate <em>POST</em> data from a form with <em>Whyte Model</em>. Consider the
+following code in a controller:</p>
+<div class="highlight-python"><pre>...
+
+if ($this-&gt;_request-&gt;isPost()) {
+    $data = $this-&gt;_request-&gt;getPost();
+    try {
+        $new_id = Application_Model_User::create($data);
+        $this-&gt;flashMessenger-&gt;addMessage('New user created');
+        $this-&gt;_redirect('/user/success'); // redirect somewhere on success
+    } catch (Whyte_Exception_EntityNotValid $e) {
+        $this-&gt;flashMessenger-&gt;addMessage('Errors found in the form');
+        $this-&gt;view-&gt;errors = $e-&gt;messages;
+        $this-&gt;view-&gt;original_data = $e-&gt;original_data;
+        // no redirect - stay to repopulate the form fields
+    }
+}
+
+...</pre>
+</div>
+<p>Assuming you have all your form fields named accordingly to the model, that is
+basically all you need to check the form input. In case there are errors in
+the form data <tt class="docutils literal"><span class="pre">$e-&gt;messages</span></tt> will have all the error messages in an
+associative array and <tt class="docutils literal"><span class="pre">$e-&gt;original_data</span></tt> will have originally submitted data
+to repopulate the form fields after failure.</p>
+<p>As you see, you can validate not only web-form <em>POST</em> data, but <strong>any</strong> data
+presented as assoc. array. It may be the result of processing JSON, CSV, etc:</p>
+<div class="highlight-python"><pre>...
+
+if (($handle = self::fopen_utf8($file_path)) !== false) {
+    while (($string = fgets($handle, 1000)) !== false) {
+        $row = str_getcsv($string, $CSV_DELIMITER);
+        $data = array();
+        list(
+            $data['number'],
+            $data['time'],
+            $data['date'],
+            $data['team_one_title'],
+            $data['team_two_title'],
+            $data['game_score']
+        ) = $row;
+        try {
+            Application_Model_Game::create($data);
+        } catch (Whyte_Exception_EntityNotValid $e) {
+            ...
+        }
+    }
+}
+...</pre>
+</div>
 </div>
 </div>
 
@@ -151,8 +201,8 @@ with javascript and jquery. One can implement it even better.</p>
   <ul>
 <li><a class="reference internal" href="#">Use cases</a><ul>
 <li><a class="reference internal" href="#defining-a-model">Defining a model</a></li>
-<li><a class="reference internal" href="#getting-required-fields-for-the-form">Getting required fields for the form</a></li>
-<li><a class="reference internal" href="#validating-the-form-input">Validating the form input</a></li>
+<li><a class="reference internal" href="#getting-required-fields-for-a-form">Getting required fields for a form</a></li>
+<li><a class="reference internal" href="#validating-form-input">Validating form input</a></li>
 </ul>
 </li>
 </ul>

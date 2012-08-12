@@ -53,10 +53,7 @@
 <p><em>&#8220;Whyte Model&#8221;</em> is a set of two abstract classes used as a base for <em>model</em>
 layer implementation in <a class="reference external" href="http://framework.zend.com/">Zend Framework</a>.
 It was made with two things in mind:</p>
-<ol class="arabic simple">
-<li><strong>Legacy Database Structures</strong>, where you rather map objects to existing table
-fields, but not use their original names like <tt class="docutils literal"><span class="pre">$this-&gt;tbl_something</span></tt>
-along with bare <tt class="docutils literal"><span class="pre">Zend_DB_Table_Row</span></tt></li>
+<ul class="simple">
 <li><strong>Define your model once</strong> per project, and then be able to check its instances
 for validity anywhere. Be it <em>POST</em> data, parsed <em>xml</em> or external
 database input.</li>
@@ -65,7 +62,10 @@ coded html-template with complex forms, you will be getting hard times
 tailoring <tt class="docutils literal"><span class="pre">Zend_Form</span></tt> to output exactly the markup you need. Whyte Model
 doesn&#8217;t mess with markup (in fact it doesn&#8217;t render anything) but can
 validate and repopulate the form.</li>
-</ol>
+<li><strong>Legacy Database Structures</strong>, where you rather map objects to existing table
+columns, but avoid using their original names like <tt class="docutils literal"><span class="pre">$this-&gt;tbl_something</span></tt>
+along with bare <tt class="docutils literal"><span class="pre">Zend_DB_Table_Row</span></tt></li>
+</ul>
 </div>
 <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
