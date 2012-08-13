@@ -131,7 +131,7 @@ abstract class Whyte_Model_Entity {
     }
 
     /**
-     * Return an array of names of required properties. Used mostly for while
+     * Return an array of names of required properties. Used mostly while
      * rendering a form.
      * @static
      * @return array
