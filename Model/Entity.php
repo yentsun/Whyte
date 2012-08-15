@@ -183,7 +183,7 @@ abstract class Whyte_Model_Entity {
 
     /**
      * Fetch entity instance by id and return it.
-     * If nothing is found - return NULL
+     * If nothing is found - return null
      * @static
      * @param $id
      * @return Whyte_Model_Entity|null

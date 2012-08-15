@@ -50,7 +50,6 @@ DB table fields. Let us do this in the *mapper*
             'last_name'=> 'tbl_family',
             'phone'=> 'tbl_phone',
             'registration_date'=> 'tbl_date',
-            'club'=> 'tbl_club',
             'job_title'=> 'tbl_job',
             'status_id'=> 'tbl_show_it'
         );

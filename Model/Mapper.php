@@ -1,7 +1,5 @@
 <?php
-/**
- * An abstract class used to back model mappers
- */
+
 abstract class Whyte_Model_Mapper {
 
     protected $_map = array();
@@ -172,7 +170,7 @@ abstract class Whyte_Model_Mapper {
     }
 
     /**
-     * Fetch a set of rows
+     * Fetch a set of entity rows
      * @param null  $limit
      * @param array $where
      * @param array $where_not

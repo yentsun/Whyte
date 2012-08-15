@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Blah &mdash; Whyte 0.1 documentation</title>
+    <title>Entity &mdash; Whyte 0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -26,7 +26,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Whyte 0.1 documentation" href="index.html" />
-    <link rel="prev" title="Uses cases" href="use_cases.html" /> 
+    <link rel="prev" title="Use cases" href="use_cases.html" /> 
   </head>
   <body>
     <div class="related">
@@ -36,7 +36,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="use_cases.html" title="Uses cases"
+          <a href="use_cases.html" title="Use cases"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">Whyte 0.1 documentation</a> &raquo;</li> 
       </ul>
@@ -47,8 +47,70 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="blah">
-<h1>Blah<a class="headerlink" href="#blah" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="entity">
+<h1>Entity<a class="headerlink" href="#entity" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="public-methods">
+<h2>Public methods<a class="headerlink" href="#public-methods" title="Permalink to this headline">¶</a></h2>
+<dl class="method">
+<dt id="to_array">
+<tt class="descname">to_array</tt><big>(</big><big>)</big><a class="headerlink" href="#to_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return entity instance as an associative array:</p>
+<div class="highlight-python"><pre>$user-&gt;to_array();
+
+/*Returns something like:
+array(
+    'id'=&gt; 345,
+    'email'=&gt; 'user@example.com',
+    'password_hash'=&gt; '601f1889667efaebb33b8c12572835da3f027f78',
+    'first_name'=&gt; 'Mike',
+    'last_name'=&gt; 'Smith',
+    'phone'=&gt; '433-7300',
+    'registration_date'=&gt; '2012-06-01',
+    'job_title'=&gt; 'scout',
+    'status_id'=&gt; 1
+);
+*/</pre>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="has_errors">
+<tt class="descname">has_errors</tt><big>(</big><big>)</big><a class="headerlink" href="#has_errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if instance has errors (is invalid):</p>
+<div class="highlight-python"><pre>if ($user-&gt;has_errors()){
+    echo 'Bad data';
+    ...
+}</pre>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="get_validators">
+<tt class="descname">get_validators</tt><big>(</big><em>$name</em><big>)</big><a class="headerlink" href="#get_validators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return entity&#8217;s validators by a property name:</p>
+<div class="highlight-python"><pre>$user-&gt;get_validators('email');
+
+/* Returns something like:
+   array('EmailAddress', 'presence'=&gt;'required')
+*/</pre>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>$name</strong> &#8211; Name of the property in question</td>
+</tr>
+</tbody>
+</table>
+<p>This method is useful when you define a new model that has similar properties
+with an already defined one:</p>
+<div class="highlight-python"><pre>...
+'email_address'=&gt; $user-&gt;get_validators('email'),
+...</pre>
+</div>
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -57,9 +119,17 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Entity</a><ul>
+<li><a class="reference internal" href="#public-methods">Public methods</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="use_cases.html"
-                        title="previous chapter">Uses cases</a></p>
+                        title="previous chapter">Use cases</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/entity.txt"
@@ -89,7 +159,7 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="use_cases.html" title="Uses cases"
+          <a href="use_cases.html" title="Use cases"
              >previous</a> |</li>
         <li><a href="index.html">Whyte 0.1 documentation</a> &raquo;</li> 
       </ul>
