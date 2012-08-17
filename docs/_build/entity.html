@@ -49,8 +49,93 @@
             
   <div class="section" id="entity">
 <h1>Entity<a class="headerlink" href="#entity" title="Permalink to this headline">¶</a></h1>
+<p>Whyte_Model_Entity is the core of <em>Whyte Model</em>. It serves as the base for all
+models of a project.</p>
 <div class="section" id="public-methods">
 <h2>Public methods<a class="headerlink" href="#public-methods" title="Permalink to this headline">¶</a></h2>
+<dl class="method">
+<dt id="fetch">
+<tt class="descname">fetch</tt><big>(</big><em>$id</em><big>)</big><a class="headerlink" href="#fetch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch entity from DB and return it as <tt class="docutils literal"><span class="pre">Whyte_Model_Entity</span></tt> instance. If
+there is no DB record with the given <tt class="docutils literal"><span class="pre">$id</span></tt> - return <tt class="docutils literal"><span class="pre">null</span></tt>. This is a
+static method:</p>
+<div class="highlight-python"><pre>...
+$id = $this-&gt;_getParam('id');
+$this-&gt;view-&gt;category = Application_Model_Category::fetch($id);
+...</pre>
+</div>
+<p>It utilizes <tt class="docutils literal"><span class="pre">Whyte_Model_Mapper::get()</span></tt> to fetch the data from DB. You are
+encouraged to override the <tt class="docutils literal"><span class="pre">fetch()</span></tt> method per model to fine-tune fetched
+data (like use another mapper method to join with another table, etc).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>$id</strong> &#8211; entity&#8217;s id</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="create">
+<tt class="descname">create</tt><big>(</big><em>array $data</em>, <em>$add_to_index=true</em><big>)</big><a class="headerlink" href="#create" title="Permalink to this definition">¶</a></dt>
+<dd><p>A static method that can be used to persist an entity:</p>
+<div class="highlight-python"><pre>try {
+  $new_id = Application_Model_Entity::create($data);
+} catch (Whyte_Exception_EntityNotValid $e) {
+  ...
+}</pre>
+</div>
+<p>It returns the new entity id or throws <tt class="docutils literal"><span class="pre">Whyte_Exception_EntityNotValid</span></tt> if
+the given <tt class="docutils literal"><span class="pre">$data</span></tt> fails to pass validation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>$data</strong> &#8211; entity data presented as an assoc. array</li>
+<li><strong>$add_to_index</strong> &#8211; add to search index if true</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="update">
+<tt class="descname">update</tt><big>(</big><em>array $data</em>, <em>$id</em>, <em>$add_to_index=true</em><big>)</big><a class="headerlink" href="#update" title="Permalink to this definition">¶</a></dt>
+<dd><p>A static method that can be used to update a persisted entity:</p>
+<div class="highlight-python"><pre>...
+if ($this-&gt;_request-&gt;isPost()) {
+    $data = $this-&gt;_request-&gt;getPost();
+    try {
+        $updated_game = Application_Model_Game::update($data, $id);
+    } catch (Whyte_Exception_EntityNotValid $e) {
+        ...
+    }
+}
+...</pre>
+</div>
+<p>It returns the updated entity or throws <tt class="docutils literal"><span class="pre">Whyte_Exception_EntityNotValid</span></tt> if
+the given <tt class="docutils literal"><span class="pre">$data</span></tt> fails to pass validation or throws
+<tt class="docutils literal"><span class="pre">Whyte_Exception_EntityNotFound</span></tt>, if there is now record with given <tt class="docutils literal"><span class="pre">$id</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>$data</strong> &#8211; entity data presented as an assoc. array</li>
+<li><strong>$id</strong> &#8211; entity&#8217;s id</li>
+<li><strong>$add_to_index</strong> &#8211; add to search index if true</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="to_array">
 <tt class="descname">to_array</tt><big>(</big><big>)</big><a class="headerlink" href="#to_array" title="Permalink to this definition">¶</a></dt>

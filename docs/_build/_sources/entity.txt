@@ -4,8 +4,67 @@
 Entity
 ======
 
+Whyte_Model_Entity is the core of *Whyte Model*. It serves as the base for all
+models of a project.
+
 Public methods
 ==============
+
+.. method:: fetch($id)
+
+  Fetch entity from DB and return it as ``Whyte_Model_Entity`` instance. If
+  there is no DB record with the given ``$id`` - return ``null``. This is a
+  static method::
+
+      ...
+      $id = $this->_getParam('id');
+      $this->view->category = Application_Model_Category::fetch($id);
+      ...
+
+  It utilizes ``Whyte_Model_Mapper::get()`` to fetch the data from DB. You are
+  encouraged to override the ``fetch()`` method per model to fine-tune fetched
+  data (like use another mapper method to join with another table, etc).
+
+  :param $id: entity's id
+
+.. method:: create(array $data, $add_to_index=true)
+
+  A static method that can be used to persist an entity::
+
+      try {
+        $new_id = Application_Model_Entity::create($data);
+      } catch (Whyte_Exception_EntityNotValid $e) {
+        ...
+      }
+
+  It returns the new entity id or throws ``Whyte_Exception_EntityNotValid`` if
+  the given ``$data`` fails to pass validation.
+
+  :param $data: entity data presented as an assoc. array
+  :param $add_to_index: add to search index if true
+
+.. method:: update(array $data, $id, $add_to_index=true)
+
+  A static method that can be used to update a persisted entity::
+
+      ...
+      if ($this->_request->isPost()) {
+          $data = $this->_request->getPost();
+          try {
+              $updated_game = Application_Model_Game::update($data, $id);
+          } catch (Whyte_Exception_EntityNotValid $e) {
+              ...
+          }
+      }
+      ...
+
+  It returns the updated entity or throws ``Whyte_Exception_EntityNotValid`` if
+  the given ``$data`` fails to pass validation or throws
+  ``Whyte_Exception_EntityNotFound``, if there is now record with given ``$id``.
+
+  :param $data: entity data presented as an assoc. array
+  :param $id: entity's id
+  :param $add_to_index: add to search index if true
 
 .. method:: to_array()
 
