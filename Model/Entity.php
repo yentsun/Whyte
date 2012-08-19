@@ -268,19 +268,16 @@ abstract class Whyte_Model_Entity {
      */
     public static function delete($id) {
 
-        if ($id) {
-            $class_name = get_called_class();
-            $dummy = new $class_name();
-            $mapper = new $dummy->_mapper_class;
-            $rows = $mapper->delete('id', $id);
-            if (!$rows)
-                throw new Exception('Now rows were affected!');
-            if (method_exists($class_name, '_clear_cache'))
-                $class_name::_clear_cache($class_name);
-            if (method_exists($class_name, '_remove_from_search_index'))
-                $class_name::_remove_from_search_index($id);
-        } else
-            throw new Exception('Id must be set!');
+        $class_name = get_called_class();
+        $dummy = new $class_name();
+        $mapper = new $dummy->_mapper_class;
+        $rows = $mapper->delete('id', $id);
+        if (!$rows)
+            throw new Exception('Now records were affected!');
+        if (method_exists($class_name, '_clear_cache'))
+            $class_name::_clear_cache($class_name);
+        if (method_exists($class_name, '_remove_from_search_index'))
+            $class_name::_remove_from_search_index($id);
     }
 
     /**

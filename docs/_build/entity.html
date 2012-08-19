@@ -26,6 +26,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Whyte 0.1 documentation" href="index.html" />
+    <link rel="next" title="Mapper" href="mapper.html" />
     <link rel="prev" title="Use cases" href="use_cases.html" /> 
   </head>
   <body>
@@ -35,6 +36,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="mapper.html" title="Mapper"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="use_cases.html" title="Use cases"
              accesskey="P">previous</a> |</li>
@@ -49,7 +53,7 @@
             
   <div class="section" id="entity">
 <h1>Entity<a class="headerlink" href="#entity" title="Permalink to this headline">¶</a></h1>
-<p>Whyte_Model_Entity is the core of <em>Whyte Model</em>. It serves as the base for all
+<p><tt class="docutils literal"><span class="pre">Whyte_Model_Entity</span></tt> is the core of <em>Whyte Model</em>. It serves as the base for all
 models of a project.</p>
 <div class="section" id="public-methods">
 <h2>Public methods<a class="headerlink" href="#public-methods" title="Permalink to this headline">¶</a></h2>
@@ -72,6 +76,29 @@ data (like use another mapper method to join with another table, etc).</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>$id</strong> &#8211; entity&#8217;s id</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fetch_all">
+<tt class="descname">fetch_all</tt><big>(</big><em>$limit=null</em><big>)</big><a class="headerlink" href="#fetch_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>This static method is mostly an example of fetching all records of an entity.
+Usually one will have to override it per model to implement different
+filtering techniques:</p>
+<div class="highlight-python"><pre>...
+// here is an overridden `fetch_all` with some model-specific params
+$this-&gt;view-&gt;teams = Application_Model_Team::fetch_all($sport_id, $page);
+...</pre>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>$limit</strong> &#8211; limit the result set</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">array</td>
 </tr>
 </tbody>
 </table>
@@ -120,7 +147,7 @@ if ($this-&gt;_request-&gt;isPost()) {
 </div>
 <p>It returns the updated entity or throws <tt class="docutils literal"><span class="pre">Whyte_Exception_EntityNotValid</span></tt> if
 the given <tt class="docutils literal"><span class="pre">$data</span></tt> fails to pass validation or throws
-<tt class="docutils literal"><span class="pre">Whyte_Exception_EntityNotFound</span></tt>, if there is now record with given <tt class="docutils literal"><span class="pre">$id</span></tt>.</p>
+<tt class="docutils literal"><span class="pre">Whyte_Exception_EntityNotFound</span></tt>, if there is no record with given <tt class="docutils literal"><span class="pre">$id</span></tt>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -131,6 +158,28 @@ the given <tt class="docutils literal"><span class="pre">$data</span></tt> fails
 <li><strong>$add_to_index</strong> &#8211; add to search index if true</li>
 </ul>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="delete">
+<tt class="descname">delete</tt><big>(</big><em>$id</em><big>)</big><a class="headerlink" href="#delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>A static method that can be used to delete a persisted entity:</p>
+<div class="highlight-python"><pre>$id = $this-&gt;_getParam('id');
+try {
+    Application_Model_User::delete($id);
+} catch (Exception $e) {
+    ...
+}</pre>
+</div>
+<p>If a record with <tt class="docutils literal"><span class="pre">$id</span></tt> is not found, it throws an <tt class="docutils literal"><span class="pre">Exception</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>$id</strong> &#8211; entity&#8217;s id</td>
 </tr>
 </tbody>
 </table>
@@ -195,6 +244,30 @@ with an already defined one:</p>
 </div>
 </dd></dl>
 
+<dl class="method">
+<dt id="count_all">
+<tt class="descname">count_all</tt><big>(</big><big>)</big><a class="headerlink" href="#count_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count all entity records. It calls the
+<a class="reference external" href="mapper.html#count_all">Whyte_Model_Mapper::count_all()</a>
+method which in turn generates a <tt class="docutils literal"><span class="pre">select</span> <span class="pre">count(*)</span></tt> query.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="dummy">
+<tt class="descname">dummy</tt><big>(</big><big>)</big><a class="headerlink" href="#dummy" title="Permalink to this definition">¶</a></dt>
+<dd><p>This static method returns a &#8216;dummy&#8217; instance of an entity with all
+properties as empty strings. Useful for populating an empty form for a
+new record while keeping the same create/update template.</p>
+</dd></dl>
+
 </div>
 </div>
 
@@ -215,6 +288,9 @@ with an already defined one:</p>
   <h4>Previous topic</h4>
   <p class="topless"><a href="use_cases.html"
                         title="previous chapter">Use cases</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mapper.html"
+                        title="next chapter">Mapper</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/entity.txt"
@@ -243,6 +319,9 @@ with an already defined one:</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="mapper.html" title="Mapper"
+             >next</a> |</li>
         <li class="right" >
           <a href="use_cases.html" title="Use cases"
              >previous</a> |</li>

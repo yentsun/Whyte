@@ -101,12 +101,12 @@ abstract class Whyte_Model_Mapper {
     /**
      * Add entity to database
      * @param Whyte_Model_Entity $entity
-     * @return int
+     * @return mixed
      */
     public function add(Whyte_Model_Entity $entity) {
 
         $mapped_data = $this->_to_mapped_array($entity);
-        return (int) $this->_gateway->insert($mapped_data);
+        return $this->_gateway->insert($mapped_data);
     }
 
     /**
