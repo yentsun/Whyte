@@ -28,7 +28,7 @@ abstract class Whyte_Model_Mapper {
     /**
      * Get mapper's map value by its name
      * @param $property
-     * @return mixed
+     * @return string
      */
     public function get_map_value($property) {
 
