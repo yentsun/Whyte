@@ -6,10 +6,10 @@ It was made with two things in mind:
 
 - **Define your model once** per project, and then be able to check its instances
   for validity anywhere. Be it *POST* data, parsed *xml* or external
-  database input.
+  database input. Usually, when you use ``Zend_Form``, you *redefine* your model.
 
-- Manage **forms without Zend_Form**. Again, if you face an already
-  coded html-template with complex forms, you will be getting hard times
+- Manage **forms without Zend_Form**. If you face an already coded
+  html-template with complex forms, you will be getting hard times
   tailoring ``Zend_Form`` to output exactly the markup you need. Whyte Model
   doesn't mess with markup (in fact it doesn't render anything) but can
   validate and repopulate the form.
