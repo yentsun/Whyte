@@ -19,31 +19,18 @@ abstract class Whyte_Model_Entity {
         $this->_post_data_population();
     }
 
-    /**
-     * A kind of pre-population hook
-     * @param array $data
-     */
     protected function _pre_data_population(array $data=null) {}
 
-    /**
-     * A kind of post-population hook
-     */
     protected function _post_data_population() {}
 
-
-    /**
-     * Take all validators away from _properties and populate _validators
-     */
+    /*take all validators away from _properties
+    and populate _validators*/
     private function _move_validators() {
 
         $this->_validators = $this->_properties;
         $this->_properties = array();
     }
 
-    /**
-     * Populate Entity instance with properties from $data array
-     * @param array $data
-     */
     protected function _populate_data(array $data) {
 
         foreach ($data as $name=>$value) {
@@ -52,10 +39,6 @@ abstract class Whyte_Model_Entity {
         }
     }
 
-    /**
-     * Return instance's properties as assoc. array
-     * @return array
-     */
     public function to_array() {
 
         return $this->_properties;
@@ -87,11 +70,6 @@ abstract class Whyte_Model_Entity {
         }
     }
 
-    /**
-     * Check instance for validity with ``Zend_Filter_Input`` and repopulate the
-     * properties. Fill _errors if instance is invalid
-     * @return bool
-     */
     private function _filter_and_check() {
 
         $entity = new Zend_Filter_Input($this->_filters, $this->_validators,
@@ -107,10 +85,6 @@ abstract class Whyte_Model_Entity {
         }
     }
 
-    /**
-     * Check if the instance has errors by running ``_filter_and_check``
-     * @return bool
-     */
     public function has_errors() {
 
         $this->_filter_and_check();
@@ -120,22 +94,12 @@ abstract class Whyte_Model_Entity {
             return false;
     }
 
-    /**
-     * Return property's validators
-     * @param $name
-     * @return mixed
-     */
     public function get_validators($name) {
 
         return $this->_validators[$name];
     }
 
-    /**
-     * Return an array of names of required properties. Used mostly while
-     * rendering a form.
-     * @static
-     * @return array
-     */
+    /*Get required properties based on validators*/
     public static function get_required() {
 
         $class_name = get_called_class();
@@ -151,12 +115,11 @@ abstract class Whyte_Model_Entity {
 
     /**
      * Create entity instance and if its valid, record to DB and return new
-     * instance id. Otherwise throw the exception.
+     * instance id. Otherwise return error array.
      * @static
      * @param array $data
      * @param bool  $add_to_index
-     * @return mixed
-     * @throws Whyte_Exception_EntityNotValid
+     * @return array | int
      */
     public static function create(array $data, $add_to_index=true) {
 
@@ -183,7 +146,7 @@ abstract class Whyte_Model_Entity {
 
     /**
      * Fetch entity instance by id and return it.
-     * If nothing is found - return null
+     * If nothing is found - return NULL
      * @static
      * @param $id
      * @return Whyte_Model_Entity|null
@@ -200,13 +163,6 @@ abstract class Whyte_Model_Entity {
             return null;
     }
 
-    /**
-     * Duplicate of ``fetch`` method for internal use (to make sure its not
-     * overridden)
-     * @static
-     * @param $id
-     * @return null | Whyte_Model_Entity
-     */
     private static function _fetch_clean($id) {
 
         $class_name = get_called_class();
@@ -221,14 +177,11 @@ abstract class Whyte_Model_Entity {
 
     /**
      * Update existing entity record and return the updated instance. If data
-     * to update is invalid, throw exceptions.
+     * to update is invalid, return error array.
      * @static
      * @param array $data
      * @param       $id
-     * @param bool  $add_to_index
-     * @return null|Whyte_Model_Entity
-     * @throws Whyte_Exception_EntityNotFound
-     * @throws Whyte_Exception_EntityNotValid
+     * @return Whyte_Model_Entity|array
      */
     public static function update(array $data, $id, $add_to_index=true) {
 
@@ -268,16 +221,19 @@ abstract class Whyte_Model_Entity {
      */
     public static function delete($id) {
 
-        $class_name = get_called_class();
-        $dummy = new $class_name();
-        $mapper = new $dummy->_mapper_class;
-        $rows = $mapper->delete('id', $id);
-        if (!$rows)
-            throw new Exception('Now records were affected!');
-        if (method_exists($class_name, '_clear_cache'))
-            $class_name::_clear_cache($class_name);
-        if (method_exists($class_name, '_remove_from_search_index'))
-            $class_name::_remove_from_search_index($id);
+        if ($id) {
+            $class_name = get_called_class();
+            $dummy = new $class_name();
+            $mapper = new $dummy->_mapper_class;
+            $rows = $mapper->delete('id', $id);
+            if (!$rows)
+                throw new Exception('Now rows were affected!');
+            if (method_exists($class_name, '_clear_cache'))
+                $class_name::_clear_cache($class_name);
+            if (method_exists($class_name, '_remove_from_search_index'))
+                $class_name::_remove_from_search_index($id);
+        } else
+            throw new Exception('id must be set!');
     }
 
     /**
@@ -290,7 +246,7 @@ abstract class Whyte_Model_Entity {
 
     /**
      * If entity has 'to_search_doc' method, perform addition to search index.
-     * Should be overridden per project
+     * Should be specific per project
      * @param null $id
      */
     protected function _add_to_search_index($id=null) {}
@@ -329,6 +285,8 @@ abstract class Whyte_Model_Entity {
         $result_set = array();
         foreach ($rows as $row) {
             $entity = new $class_name($mapper->row_to_array($row));
+            //save the row for further access to additional properties
+            $entity->row = $row;
             $result_set[$entity->id] = $entity;
         }
         return $result_set;
