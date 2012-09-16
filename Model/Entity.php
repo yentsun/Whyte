@@ -183,10 +183,13 @@ abstract class Whyte_Model_Entity {
      * @param       $id
      * @return Whyte_Model_Entity|array
      */
-    public static function update(array $data, $id, $add_to_index=true) {
+    public static function update(array $data, $id, $add_to_index=true,
+                                  $fetch_clean=true) {
 
         $class_name = get_called_class();
-        $entity = $class_name::_fetch_clean($id);
+        $entity = $fetch_clean ?
+            $class_name::_fetch_clean($id) :
+            $class_name::fetch($id);
         if ($entity instanceof self) {
             foreach ($data as $name=>$value) {
                 //update everything except 'id'
