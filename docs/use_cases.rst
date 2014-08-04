@@ -8,7 +8,9 @@ Defining a model
 ================
 
 Lets imagine we have a *User* model in our project. We could define it in
-``application/models/User.php`` using *Whyte Model* like this::
+``application/models/User.php`` using *Whyte Model* like this
+
+.. code-block:: php
 
     <?php
 
